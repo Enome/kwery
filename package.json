@@ -2,14 +2,16 @@
   "author": "Geert Pasteels <geert.pasteels@gmail.com> (http://www.twitter.com/enome)",
   "name": "kwery",
   "description": "Find objects in an array by regex or attribute value",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/Enome/kwery.git"
   },
   "main": "index.js",
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "should": "~0.6.3"
+  },
   "optionalDependencies": {},
   "engines": {
     "node": "*"
