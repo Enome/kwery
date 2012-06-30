@@ -11,7 +11,7 @@ var query = function (objects, query, callback) {
 
     if (is_regex && term.test(obj[key].toString())) {
       result.push(obj);
-    } else if (term === obj[key]) {
+    } else if (term.toString() === obj[key].toString()) {
       result.push(obj);
     }
 

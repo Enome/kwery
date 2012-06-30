@@ -19,9 +19,9 @@ describe('Kwery', function () {
 
     it('returns all the objects found by attribute', function (done) {
       
-      var objects = [ { name: 'one' }, { name: 'one' } ];
+      var objects = [ { name: '1' }, { name: 1 } ];
 
-      var result = kwery(objects, { name: 'one' });
+      var result = kwery(objects, { name: 1 });
 
       result.many(function (response) {
         response.should.eql(objects);
