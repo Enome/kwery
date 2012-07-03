@@ -85,7 +85,7 @@ describe('Kwery', function () {
 
     describe('Many', function () {
 
-      it('returns all the matching results', function () {
+      it('returns all the matching results', function (done) {
         
         var db = [
           {
@@ -129,6 +129,7 @@ describe('Kwery', function () {
           ];
 
           eql(expected, response);
+          done();
 
         });
 
