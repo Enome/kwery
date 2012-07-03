@@ -1,75 +1,137 @@
 var kwery = require('./');
+var eql = require('eql');
 
 describe('Kwery', function () {
-  
-  describe('Many', function () {
+
+  describe('Flat', function () {
     
-    it('returns all the objects found by regex', function (done) {
+    describe('Many', function () {
       
-      var objects = [ { name: 'one' }, { name: 'two' }, { name: 'three' } ];
+      it('returns all the objects found by regex', function (done) {
+        
+        var objects = [ { name: 'one' }, { name: 'two' }, { name: 'three' } ];
 
-      var result = kwery(objects, { name: /.*/ });
+        var result = kwery.flat(objects, { name: /.*/ });
 
-      result.many(function (response) {
-        response.should.eql(objects);
-        done();
+        result.many(function (response) {
+          response.should.eql(objects);
+          done();
+        });
+
+      });
+
+      it('returns all the objects found by attribute', function (done) {
+        
+        var objects = [ { name: '1' }, { name: 1 } ];
+
+        var result = kwery.flat(objects, { name: 1 });
+
+        result.many(function (response) {
+          response.should.eql(objects);
+          done();
+        });
+
       });
 
     });
 
-    it('returns all the objects found by attribute', function (done) {
+    describe('One', function () {
       
-      var objects = [ { name: '1' }, { name: 1 } ];
+      it('returns one object', function (done) {
 
-      var result = kwery(objects, { name: 1 });
+        var objects = [ { name: 'one' }, { name: 'two' }, { name: 'three' } ];
 
-      result.many(function (response) {
-        response.should.eql(objects);
-        done();
+        var result = kwery.flat(objects, { name: 'one' });
+
+        result.one(function (response) {
+          response.should.eql({ name: 'one' });
+          done();
+        });
+
+        result.empty(function () {
+          false.should.be.true;
+          done();
+        });
+
+      });
+
+    });
+
+    describe('Empty', function () {
+      
+      it('returns nothing object', function (done) {
+
+        var objects = [ { name: 'one' }, { name: 'two' }, { name: 'three' } ];
+
+        var result = kwery.flat(objects, { name: 'four' });
+
+        result.empty(function () {
+          true.should.true
+          done();
+        });
+
+        result.one(function () {
+          false.should.true
+          done();
+        });
+
       });
 
     });
 
   });
 
-  describe('One', function () {
-    
-    it('returns one object', function (done) {
+  describe('Tree', function () {
 
-      var objects = [ { name: 'one' }, { name: 'two' }, { name: 'three' } ];
+    describe('Many', function () {
 
-      var result = kwery(objects, { name: 'one' });
+      it('returns all the matching results', function () {
+        
+        var db = [
+          {
+            id: 0,
+            name: 'snowboard',
+            path: '/snowboard',
+            children: [
+              {
+                id: 1,
+                name: 'tags',
+                path: '/snowboard/tags',
 
-      result.one(function (response) {
-        response.should.eql({ name: 'one' });
-        done();
-      });
+                children: [
+                  { id: 2, name: 'red', path: '/snowboard/tags/red' },
+                  { id: 3, name: 'green', path: '/snowboard/tags/green' }
+                ]
 
-      result.empty(function () {
-        false.should.be.true;
-        done();
-      });
+              }
+            ]
+          }
+        ];
 
-    });
+        var result = kwery.tree(db, { path: /snowboard\/.*/ });
 
-  });
+        result.many(function (response) {
+          var expected = [
+            {
+              id: 1,
+              name: 'tags',
+              path: '/snowboard/tags',
 
-  describe('Empty', function () {
-    
-    it('returns nothing object', function (done) {
+              children: [
+                { id: 2, name: 'red', path: '/snowboard/tags/red' },
+                { id: 3, name: 'green', path: '/snowboard/tags/green' }
+              ]
 
-      var objects = [ { name: 'one' }, { name: 'two' }, { name: 'three' } ];
+            },
+            { id: 2, name: 'red', path: '/snowboard/tags/red' },
+            { id: 3, name: 'green', path: '/snowboard/tags/green' }
 
-      var result = kwery(objects, { name: 'four' });
+          ];
 
-      result.empty(function () {
-        true.should.true
-        done();
-      });
+          eql(expected, response);
 
-      result.one(function () {
-        false.should.true
-        done();
+        });
+
       });
 
     });
@@ -77,3 +139,4 @@ describe('Kwery', function () {
   });
 
 });
+

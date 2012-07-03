@@ -1,4 +1,4 @@
-var query = function (objects, query, callback) {
+var flat = function (objects, query, callback) {
 
   var key = Object.keys(query)[0];
   var term = query[key];
@@ -21,19 +21,23 @@ var query = function (objects, query, callback) {
 
 };
 
-module.exports = function (objects, opts) {
+var tree = function (objects, query, callback) {
 
-  var kwery = {
+};
+
+var query = function (type, objects, opts) {
+
+  var query = {
 
     many: function (callback) {
 
-      query(objects, opts, callback);
+      type(objects, opts, callback);
 
     },
 
     one: function (callback) {
 
-      kwery.many(function (response) {
+      query.many(function (response) {
 
         if (response.length > 0) {
           callback(response[0]);
@@ -45,7 +49,7 @@ module.exports = function (objects, opts) {
 
     empty: function (callback) {
 
-      kwery.many(function (response) {
+      query.many(function (response) {
 
         if (response.length === 0) {
           callback();
@@ -57,6 +61,11 @@ module.exports = function (objects, opts) {
 
   };
 
-  return kwery;
+  return query;
 
+};
+
+module.exports = {
+  flat: query.bind(null, flat),
+  tree: query.bind(null, tree)
 };
