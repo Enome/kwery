@@ -4,9 +4,14 @@ var match = function (query, obj) {
   var term = query[key];
   var is_regex = term instanceof RegExp;
 
+  if (typeof obj[key] === 'undefined') {
+    return false;
+  }
+
   return ((is_regex && term.test(obj[key].toString())) || (term.toString() === obj[key].toString()));
 
 };
+
 
 var flat = function (objects, query, callback) {
 

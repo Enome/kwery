@@ -33,6 +33,33 @@ describe('Kwery', function () {
 
       });
 
+      it('returns all the objects found by both attributes', function (done) {
+
+        var objects = [ { name: 'snowboard', id: 1}, { name: 'skateboard', id: 2 } ];
+
+        var result = kwery.flat(objects, { name: 'snowboard', id: 1 });
+
+        result.many(function (response) {
+          response.should.eql([ { name: 'snowboard', id: 1 } ]);
+          done();
+        });
+
+      });
+
+      it('returns nothing if keys doesnt exists', function (done) {
+
+        var objects = [ { name: 'snowboard', id: 1}, { name: 'skateboard', id: 2 } ];
+
+        var result = kwery.flat(objects, { order: 'snowboard' });
+
+        result.many(function (response) {
+          response.should.eql([]);
+          done();
+        });
+
+
+      });
+
     });
 
     describe('One', function () {

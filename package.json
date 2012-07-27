@@ -1,21 +1,13 @@
 {
-  "author": "Geert Pasteels <geert.pasteels@gmail.com> (http://www.twitter.com/enome)",
+  "author": "Geert Pasteels <geert.pasteels@gmail.com>",
   "name": "kwery",
   "description": "Find objects in an array or tree structure by regex or attribute value",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/Enome/kwery.git"
   },
-  "main": "index.js",
   "dependencies": {
-    "eql": "0.0.4"
-  },
-  "devDependencies": {
-    "should": "~0.6.3"
-  },
-  "optionalDependencies": {},
-  "engines": {
-    "node": "*"
+    "eql": "0.0.5"
   }
 }
