@@ -8,7 +8,11 @@ var match = function (query, obj) {
     return false;
   }
 
-  return ((is_regex && term.test(obj[key].toString())) || (term.toString() === obj[key].toString()));
+  if (!is_regex) {
+    term = new RegExp(term.toString());
+  }
+
+  return term.test(obj[key].toString());
 
 };
 

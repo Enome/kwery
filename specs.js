@@ -19,6 +19,19 @@ describe('Kwery', function () {
         });
 
       });
+      
+      it('returns all the objects found by string which is a regex', function (done) {
+        
+        var objects = [ { name: 'one' }, { name: 'two' }, { name: 'three' } ];
+
+        var result = kwery.flat(objects, { name: '.*' });
+
+        result.many(function (response) {
+          response.should.eql(objects);
+          done();
+        });
+
+      });
 
       it('returns all the objects found by attribute', function (done) {
         

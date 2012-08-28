@@ -1,6 +1,6 @@
 # Kwery
 
-Find objects in an array or tree structure by regex or attribute value.
+Find objects in an array or tree structure by regex or attribute value. All values get converted to a RegExp.
 
 ## Flat
 
