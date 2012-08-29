@@ -9,7 +9,7 @@ var match = function (query, obj) {
   }
 
   if (!is_regex) {
-    term = new RegExp(term.toString());
+    term = new RegExp('^' + term.toString() + '$');
   }
 
   return term.test(obj[key].toString());

@@ -22,12 +22,12 @@ describe('Kwery', function () {
       
       it('returns all the objects found by string which is a regex', function (done) {
         
-        var objects = [ { name: 'one' }, { name: 'two' }, { name: 'three' } ];
+        var objects = [ { name: 'one' }, { name: 'on' }, { name: 'o' } ];
 
-        var result = kwery.flat(objects, { name: '.*' });
+        var result = kwery.flat(objects, { name: 'on' });
 
         result.many(function (response) {
-          response.should.eql(objects);
+          response.should.eql([ objects[1] ]);
           done();
         });
 
