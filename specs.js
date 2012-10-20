@@ -70,6 +70,18 @@ describe('Kwery', function () {
           done();
         });
 
+      });
+
+      it('returns nothing if the query is undefined', function (done) {
+
+        var objects = [ { name: 'snowboard', id: 1}, { name: 'skateboard', id: 2 } ];
+
+        var result = kwery.flat(objects, { name: undefined });
+
+        result.many(function (response) {
+          response.should.eql([]);
+          done();
+        });
 
       });
 
@@ -123,35 +135,14 @@ describe('Kwery', function () {
 
   describe('Tree', function () {
 
-    describe('Many', function () {
-
-      it('returns all the matching results', function (done) {
-        
-        var db = [
-          {
-            id: 0,
-            name: 'snowboard',
-            path: '/snowboard',
-            children: [
-              {
-                id: 1,
-                name: 'tags',
-                path: '/snowboard/tags',
-
-                children: [
-                  { id: 2, name: 'red', path: '/snowboard/tags/red' },
-                  { id: 3, name: 'green', path: '/snowboard/tags/green' }
-                ]
-
-              }
-            ]
-          }
-        ];
-
-        var result = kwery.tree(db, { path: /snowboard\/.*/ });
-
-        result.many(function (response) {
-          var expected = [
+    it('returns all the matching results', function (done) {
+      
+      var db = [
+        {
+          id: 0,
+          name: 'snowboard',
+          path: '/snowboard',
+          children: [
             {
               id: 1,
               name: 'tags',
@@ -162,22 +153,39 @@ describe('Kwery', function () {
                 { id: 3, name: 'green', path: '/snowboard/tags/green' }
               ]
 
-            },
-            { id: 2, name: 'red', path: '/snowboard/tags/red' },
-            { id: 3, name: 'green', path: '/snowboard/tags/green' }
+            }
+          ]
+        }
+      ];
 
-          ];
+      var result = kwery.tree(db, { path: /snowboard\/.*/ });
 
-          eql(expected, response);
-          done();
+      result.many(function (response) {
+        var expected = [
+          {
+            id: 1,
+            name: 'tags',
+            path: '/snowboard/tags',
 
-        });
+            children: [
+              { id: 2, name: 'red', path: '/snowboard/tags/red' },
+              { id: 3, name: 'green', path: '/snowboard/tags/green' }
+            ]
+
+          },
+          { id: 2, name: 'red', path: '/snowboard/tags/red' },
+          { id: 3, name: 'green', path: '/snowboard/tags/green' }
+
+        ];
+
+        eql(expected, response);
+        done();
 
       });
+
 
     });
 
   });
 
 });
-

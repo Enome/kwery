@@ -4,7 +4,7 @@ var match = function (query, obj) {
   var term = query[key];
   var is_regex = term instanceof RegExp;
 
-  if (typeof obj[key] === 'undefined') {
+  if (typeof obj[key] === 'undefined' || typeof term === 'undefined') {
     return false;
   }
 
